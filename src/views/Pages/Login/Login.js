@@ -1,11 +1,68 @@
 import React, { Component } from 'react';
-import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import {
+  Button,
+  Card,
+  CardBody,
+  CardGroup,
+  Col,
+  Container,
+  Form,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  Row
+} from 'reactstrap';
+import { Redirect } from 'react-router-dom'
+
+
+import {
+  mailPassLogin
+} from '../../../actions/index';
+
+import { connect } from 'react-redux';
+
+
 
 class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: ''
+    }
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange = (event) => {
+    const target = event.target;
+    const name = target.name;
+    this.setState({
+      [name]: target.value
+    });
+  };
+
+  handleSubmit = () => {
+    const { email, password } = this.state;
+    debugger;
+    this.props.login(email, password, (wasUserLogged) => {
+      if(wasUserLogged)
+        this.props.history.push('/dashboard');
+    });
+  }
+
+
+
   render() {
+    const { isLoading } = this.props;
+    if (this.state.toHomePage) {
+      <Redirect to='/dashboard' />
+    }
     return (
       <div className="app flex-row align-items-center">
         <Container>
+          {isLoading && <div>Loading .. </div>}
           <Row className="justify-content-center">
             <Col md="8">
               <CardGroup>
@@ -20,7 +77,14 @@ class Login extends Component {
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" placeholder="Username" autoComplete="username" />
+                        <Input
+                          name='email'
+                          onChange={this.handleChange}
+                          type="text"
+                          placeholder="Email"
+                          autoComplete="username"
+                          value={this.state.email}
+                        />
                       </InputGroup>
                       <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">
@@ -28,11 +92,20 @@ class Login extends Component {
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="password" placeholder="Password" autoComplete="current-password" />
+                        <Input
+                          name='password'
+                          onChange={this.handleChange}
+                          type="password"
+                          placeholder="Password"
+                          autoComplete="current-password"
+                          value={this.state.password}
+                        />
                       </InputGroup>
                       <Row>
                         <Col xs="6">
-                          <Button color="primary" className="px-4">Login</Button>
+                          <Button color="primary"
+                            onClick={this.handleSubmit}
+                            className="px-4">Login</Button>
                         </Col>
                         <Col xs="6" className="text-right">
                           <Button color="link" className="px-0">Forgot password?</Button>
@@ -60,4 +133,16 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = ({ auth }) => {
+  const { isLoading, user } = auth;
+  return {
+    isLoading
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    login: (email, password, callback) => dispatch(mailPassLogin(email, password, callback))
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
