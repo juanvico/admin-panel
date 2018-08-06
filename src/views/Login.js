@@ -11,28 +11,40 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Row
+  Row,
+  Alert,
 } from 'reactstrap';
-import { Redirect } from 'react-router-dom'
-
-
 import {
   mailPassLogin
-} from '../../../actions/index';
-
+} from '../actions/index';
 import { connect } from 'react-redux';
-
-
+import {
+  Redirect
+} from 'react-router-dom'
+const Loader = require('react-spinkit');
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      toHomePage: false
     }
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    const localStorage = window.localStorage;
+    if (localStorage.length > 0) {
+      const getStoredEmail = localStorage.getItem('email');
+      const getStoredPassword = localStorage.getItem('password');
+      if (getStoredEmail.length > 0 && getStoredPassword.length > 0) {
+        this.loginProxy(getStoredEmail, getStoredPassword);
+      }
+    }
   }
 
   handleChange = (event) => {
@@ -43,28 +55,40 @@ class Login extends Component {
     });
   };
 
-  handleSubmit = () => {
-    const { email, password } = this.state;
-    debugger;
+  loginProxy = (email, password) => {
+    const localStorage = window.localStorage;
+    localStorage.setItem('email', email);
+    localStorage.setItem('password', password);
     this.props.login(email, password, (wasUserLogged) => {
-      if(wasUserLogged)
-        this.props.history.push('/dashboard');
+      if (wasUserLogged) {
+        this.setState({ toHomePage: true })
+      }
+      else {
+        this.setState({ errorMessage: this.props.errorMessage })
+      }
     });
   }
 
-
+  handleSubmit = () => {
+    const { email, password } = this.state;
+    this.loginProxy(email, password);
+  }
 
   render() {
-    const { isLoading } = this.props;
+    const { isLoading, errorMessage } = this.props;
     if (this.state.toHomePage) {
-      <Redirect to='/dashboard' />
+      return <Redirect to='/' />
     }
     return (
       <div className="app flex-row align-items-center">
+        {isLoading && <Loader name='double-bounce' />}
         <Container>
-          {isLoading && <div>Loading .. </div>}
           <Row className="justify-content-center">
             <Col md="8">
+              {errorMessage &&
+                <Alert color="danger">
+                  {errorMessage}
+                </Alert>}
               <CardGroup>
                 <Card className="p-4">
                   <CardBody>
@@ -114,16 +138,6 @@ class Login extends Component {
                     </Form>
                   </CardBody>
                 </Card>
-                <Card className="text-white bg-primary py-5 d-md-down-none" style={{ width: 44 + '%' }}>
-                  <CardBody className="text-center">
-                    <div>
-                      <h2>Sign up</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.</p>
-                      <Button color="primary" className="mt-3" active>Register Now!</Button>
-                    </div>
-                  </CardBody>
-                </Card>
               </CardGroup>
             </Col>
           </Row>
@@ -134,9 +148,11 @@ class Login extends Component {
 }
 
 const mapStateToProps = ({ auth }) => {
-  const { isLoading, user } = auth;
+  const { isLoading, user, errorMessage } = auth;
   return {
-    isLoading
+    isLoading,
+    user,
+    errorMessage
   }
 }
 

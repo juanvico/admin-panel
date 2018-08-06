@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
-
 import {
-  AppAside,
   AppBreadcrumb,
   AppFooter,
   AppHeader,
@@ -18,16 +16,20 @@ import {
 import navigation from '../../_nav';
 // routes config
 import routes from '../../routes';
-import DefaultAside from './DefaultAside';
 import DefaultFooter from './DefaultFooter';
 import DefaultHeader from './DefaultHeader';
+import RegisteUser from '../../views/admin/Register';
 
 class DefaultLayout extends Component {
+  constructor(props) {
+    super(props);
+    debugger;
+  }
   render() {
     return (
       <div className="app">
         <AppHeader fixed>
-          <DefaultHeader />
+          <DefaultHeader {...this.props} />
         </AppHeader>
         <div className="app-body">
           <AppSidebar fixed display="lg">
@@ -38,23 +40,13 @@ class DefaultLayout extends Component {
             <AppSidebarMinimizer />
           </AppSidebar>
           <main className="main">
-            <AppBreadcrumb appRoutes={routes}/>
+            <AppBreadcrumb appRoutes={routes} />
             <Container fluid>
               <Switch>
-                {routes.map((route, idx) => {
-                    return route.component ? (<Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
-                        <route.component {...props} />
-                      )} />)
-                      : (null);
-                  },
-                )}
-                <Redirect from="/" to="/dashboard" />
+                <Route path="/registerUser" name="Nuevo Usuario" component={RegisteUser} />
               </Switch>
             </Container>
           </main>
-          <AppAside fixed hidden>
-            <DefaultAside />
-          </AppAside>
         </div>
         <AppFooter>
           <DefaultFooter />

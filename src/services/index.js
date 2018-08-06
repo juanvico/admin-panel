@@ -24,9 +24,7 @@ export const mailPassLogin = async (email, password) => {
         password
     }
     try {
-        debugger;
         const response = await HTTP.post(`/auth/login`, body);
-        debugger;
         if (response.status === 200 && response.data.success) {
             setToken(response.data.token);
             return {
@@ -37,7 +35,7 @@ export const mailPassLogin = async (email, password) => {
         };
         return {
             success: false,
-            errorMessage: response.data ? getMessage(response.data.message) : ''
+            error: response.data ? getMessage(response.data.message) : ''
         }
     } catch (err) {
         return {

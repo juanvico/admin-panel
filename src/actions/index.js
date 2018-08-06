@@ -6,7 +6,6 @@ import * as services from '../services';
 
 export const mailPassLogin = (email, password, callback) => async (dispatch) => {
     try {
-        debugger;
         dispatch({ type: types.LOGIN_REQUEST });
         const response = await services.mailPassLogin(email, password);
         if (response.success) {
