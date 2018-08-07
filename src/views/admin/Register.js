@@ -19,15 +19,14 @@ import { connect } from 'react-redux';
 class RegisterUser extends Component {
     constructor(props) {
         super(props);
+        debugger;
     }
     render() {
         return (
-            <Row>
-                <Col xs="12" >
+            <Row className="justify-content-center">
+                <Col md="9" >
                     <Card>
-                        <CardHeader>
-                            Example Form
-                         </CardHeader>
+                        <CardHeader>Nuevo Usuario</CardHeader>
                         <CardBody>
                             <Form action="" method="post">
                                 <FormGroup>
@@ -76,20 +75,20 @@ class RegisterUser extends Component {
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col md="3">
-                                        <Label>Inline Radios</Label>
+                                        <Label>Tipo de Usuarios</Label>
                                     </Col>
-                                    <Col md="9">
+                                    <Col md="6">
                                         <FormGroup check inline>
                                             <Input className="form-check-input" type="radio" id="inline-radio1" name="inline-radios" value="option1" />
-                                            <Label className="form-check-label" check htmlFor="inline-radio1">One</Label>
+                                            <Label className="form-check-label" check htmlFor="inline-radio1">Administrador</Label>
                                         </FormGroup>
                                         <FormGroup check inline>
                                             <Input className="form-check-input" type="radio" id="inline-radio2" name="inline-radios" value="option2" />
-                                            <Label className="form-check-label" check htmlFor="inline-radio2">Two</Label>
+                                            <Label className="form-check-label" check htmlFor="inline-radio2">Usuario Regular</Label>
                                         </FormGroup>
                                         <FormGroup check inline>
                                             <Input className="form-check-input" type="radio" id="inline-radio3" name="inline-radios" value="option3" />
-                                            <Label className="form-check-label" check htmlFor="inline-radio3">Three</Label>
+                                            <Label className="form-check-label" check htmlFor="inline-radio3">Visitante</Label>
                                         </FormGroup>
                                     </Col>
                                 </FormGroup>

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import routes from './routes';
+import { Login } from './views';
+import DefaultLayout from './containers/DefaultLayout';
 import { Provider } from 'react-redux';
 import configureStore from './store/configureStore';
 
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
 // Styles
 // CoreUI Icons Set
@@ -22,19 +23,12 @@ class App extends Component {
   render() {
     return (
       <Provider store={store} >
-        <BrowserRouter>
+        <HashRouter>
           <Switch>
-            {routes.map((route) => {
-              return (<Route
-                key={route.path}
-                path={route.path}
-                render={props=> <route.component {...props} />}
-                name={route.name}
-                exact={route.exact}
-              />)
-            })}
+            <Route exact path="/login" name="Login Page" component={Login} />
+            <Route path="/" name="Home" component={DefaultLayout} />
           </Switch>
-        </BrowserRouter>
+        </HashRouter>
       </Provider>
     );
   }

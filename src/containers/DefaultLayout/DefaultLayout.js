@@ -12,20 +12,39 @@ import {
   AppSidebarMinimizer,
   AppSidebarNav,
 } from '@coreui/react';
-// sidebar nav config
-import navigation from '../../_nav';
-// routes config
-import routes from '../../routes';
+import { connect } from 'react-redux';
+
+import routes from '../../navigation/routes';
 import DefaultFooter from './DefaultFooter';
 import DefaultHeader from './DefaultHeader';
-import RegisteUser from '../../views/admin/Register';
-
+const { userBarOptions, NavBar } = require('../../navigation/_nav');
 class DefaultLayout extends Component {
   constructor(props) {
     super(props);
-    debugger;
+    this.state = {
+      goToLogin: false,
+      navigation: NavBar
+    }
   }
+
+  componentDidMount() {
+    const { user } = this.props;
+    if (!user) {
+      this.setState({ goToLogin: true });
+    } else {
+      const nav = userBarOptions(user);
+      debugger;
+      this.setState({
+        navigation: nav
+      })
+    }
+  }
+
   render() {
+    const { user } = this.props;
+    if (this.state.goToLogin) {
+      return <Redirect to='/login' />
+    }
     return (
       <div className="app">
         <AppHeader fixed>
@@ -35,7 +54,7 @@ class DefaultLayout extends Component {
           <AppSidebar fixed display="lg">
             <AppSidebarHeader />
             <AppSidebarForm />
-            <AppSidebarNav navConfig={navigation} {...this.props} />
+            <AppSidebarNav navConfig={this.state.navigation} {...this.props} />
             <AppSidebarFooter />
             <AppSidebarMinimizer />
           </AppSidebar>
@@ -43,7 +62,14 @@ class DefaultLayout extends Component {
             <AppBreadcrumb appRoutes={routes} />
             <Container fluid>
               <Switch>
-                <Route path="/registerUser" name="Nuevo Usuario" component={RegisteUser} />
+                {routes.map((route, idx) => {
+                  return route.component ? (<Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
+                    <route.component {...props} />
+                  )} />)
+                    : (null);
+                },
+                )}
+                <Redirect from="/" to="/dashboard" />
               </Switch>
             </Container>
           </main>
@@ -56,4 +82,14 @@ class DefaultLayout extends Component {
   }
 }
 
-export default DefaultLayout;
+
+const mapStateToProps = ({ auth }) => {
+  const { isLoading, user, errorMessage } = auth;
+  return {
+    isLoading,
+    user,
+    errorMessage
+  }
+}
+
+export default connect(mapStateToProps)(DefaultLayout);
