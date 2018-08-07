@@ -77,7 +77,7 @@ class Login extends Component {
   render() {
     const { isLoading, errorMessage } = this.props;
     if (this.state.toHomePage) {
-      return <Redirect to='/' />
+      return <Redirect to='/home' />
     }
     return (
       <div className="app flex-row align-items-center">

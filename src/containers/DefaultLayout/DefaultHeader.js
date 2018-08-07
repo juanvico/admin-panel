@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+
 import {
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
   Nav,
   NavItem,
-  NavLink
+  NavLink,
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';

@@ -1,7 +1,10 @@
 import Login from './Login';
-import { Register } from './admin';
+import Home from './Home';
+import { RegisterUser, UsersInfo } from './admin';
 
 export {
   Login,
-  Register
+  RegisterUser,
+  Home,
+  UsersInfo
 };

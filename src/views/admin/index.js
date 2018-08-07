@@ -1,2 +1,10 @@
-import Register from './Register';
-export { Register } 
+import RegisterUser from './RegisterUser';
+import UsersInfo from './UsersInfo';
+
+
+
+export {
+     RegisterUser,
+     UsersInfo
+
+} 

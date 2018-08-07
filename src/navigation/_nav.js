@@ -3,7 +3,7 @@ const NavBar = () => {
     items: [
       {
         name: 'Home',
-        url: './',
+        url: './home',
         icon: 'icon-home'
       },
       {
@@ -17,14 +17,9 @@ const NavBar = () => {
             icon: 'icon-plus',
           },
           {
-            name: 'Modificar',
-            url: '/editPartner',
+            name: 'Informacion',
+            url: '/partnerInfo',
             icon: 'icon-pencil',
-          },
-          {
-            name: 'Eliminar',
-            url: '/deletePartner',
-            icon: 'icon-close',
           },
         ],
       },
@@ -36,17 +31,12 @@ const NavBar = () => {
           {
             name: 'Nuevo',
             url: '/newContract',
-            icon: 'icon-user',
+            icon: 'icon-plus',
           },
           {
-            name: 'Modificar',
-            url: '/editContract',
+            name: 'Informacion',
+            url: '/contractInfo',
             icon: 'icon-pencil',
-          },
-          {
-            name: 'Eliminar',
-            url: '/deleteContract',
-            icon: 'icon-close',
           },
         ]
       },
@@ -74,9 +64,21 @@ const adminOptions = [
     name: 'Configuraciones de administrador',
   },
   {
-    name: 'Nuevo usuario',
-    url: '/registerUser',
-    icon: 'icon-plus',
+    name: 'Usuarios',
+    url: '/users',
+    icon: 'icon-people',
+    children:[
+      {
+        name: 'Nuevo',
+        url: '/registerUser',
+        icon: 'icon-plus',
+      },
+      {
+        name: 'Informacion',
+        url: '/usersInfo',
+        icon: 'icon-pencil',
+      },
+    ]
   },
   {
     name: 'Radios',
@@ -89,15 +91,10 @@ const adminOptions = [
         icon: 'icon-plus',
       },
       {
-        name: 'Modificar',
-        url: '/editRatio',
+        name: 'Informacion',
+        url: '/ratioInfo',
         icon: 'icon-pencil',
-      },
-      {
-        name: 'Modificar',
-        url: '/deleteRatio',
-        icon: 'icon-close',
-      },
+      }
     ],
   },
   {
